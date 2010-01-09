@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+#Load Library
+require 'lib/bot-config'
+require 'lib/irc-connect'
+require 'lib/string-methods'
+
+#Display a start message
+puts "**********************************************************"
+puts "Starting RIRCB"
+puts "**********************************************************"
+
+#Load Config
+puts "Loading Config"
+bot=Bot.new(IRC.new)
+
+#The All important loop
+puts "**********************************************************"
+puts "Starting the Main process loop"
+puts "**********************************************************"
+
+while true
+	bot.run
+end
