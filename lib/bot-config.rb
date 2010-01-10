@@ -23,10 +23,9 @@ class Bot
 			server=msg.scan(/^PING :(.*)/).join
 			@irc.send("PONG #{server}")
 		elsif msg.privmsg?
-			#m=msg.split(/\:/,3)[2].sub("\r\n",'')
-			m=msg.scan(/.* PRIVMSG .* \:(.*)/).join.sub("\r\n",'')
 			nick=msg.split(/\!/)[0].sub(/^\:/,'')
-			chan=msg.scan(/.* PRIVMSG (.*) \:.*/).join
+			chan=msg.scan(/.* PRIVMSG (.*?) \:.*/).join
+			m=msg.scan(/.* PRIVMSG #{chan} \:(.*)/).join.sub("\r\n",'')
 			if chan == @config["nick"]
 				chan=msg.scan(/^\:(.*)!.*@.*/).join
 			end
