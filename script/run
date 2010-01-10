@@ -4,6 +4,7 @@ require 'lib/bot-config'
 require 'lib/irc-connect'
 require 'lib/string-methods'
 require 'lib/command-startup.rb'
+require 'lib/datastore.rb'
 
 
 #Display a start message

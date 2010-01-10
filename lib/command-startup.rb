@@ -2,7 +2,7 @@ class Command
 	def initialize(irc,bot)
 		@irc=irc
 		@bot=bot
-		@commands=["reboot","kill"]
+		@commands=["reboot","kill","reload"]
 		Dir["commands/*.rb"].each do |f|
 			require f
 			s=f.scan(/commands\/(.*?)\.rb/).join
@@ -41,6 +41,10 @@ class Command
 		rescue NoMethodError
 			return cmdper(command)
 		end
+	end
+	def reload(msg,chan)
+		@irc.notice("Reloading Commands",chan)
+		@bot.reloadcommands
 	end
 	def denytochan
 		@auth["denytochan"]

@@ -1,3 +1,4 @@
 *~
 config/bot.yml
 config/authentication.yml
+datastore/*

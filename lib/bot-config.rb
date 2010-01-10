@@ -51,6 +51,7 @@ class Bot
 					end
 				end
 			end
+			@commands.updateseen(nick,chan,"privmsg")
 		end
 	end
 	def reboot=(val)
@@ -70,5 +71,12 @@ class Bot
 	end
 	def disconnect
 		@irc.disconnect
+	end
+	def reloadcommands
+		puts "**********************************************************"
+		puts "Re-Loading Commands"
+		@commands=Command.new(@irc,self)
+		puts "Loaded:"
+		puts @commands.commands
 	end
 end

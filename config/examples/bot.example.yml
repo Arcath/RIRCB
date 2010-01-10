@@ -1,0 +1,8 @@
+nick: RIRCB 			#Nickname For the bot in channel
+name: Ruby IRC Bot 		#The reported real name of the Bot
+host: your.host 		#Host field
+server: irc.ircserver.tld	#The server it needs to connect to
+port: 6667 			#The IRC port leave it at 6667 unless you know what your doing
+channel: 			#An arry of channels to join
+  - "#whitefall"
+command: "!"			#The command symbol
