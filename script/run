@@ -3,21 +3,36 @@
 require 'lib/bot-config'
 require 'lib/irc-connect'
 require 'lib/string-methods'
+require 'lib/command-startup.rb'
+
 
 #Display a start message
 puts "**********************************************************"
 puts "Starting RIRCB"
 puts "**********************************************************"
 
+sleep 1
+
 #Load Config
 puts "Loading Config"
 bot=Bot.new(IRC.new)
+
+sleep 1
 
 #The All important loop
 puts "**********************************************************"
 puts "Starting the Main process loop"
 puts "**********************************************************"
 
-while true
+sleep 1
+
+while (bot.reboot? != true && bot.kill? != true)
 	bot.run
+end
+
+bot.disconnect
+
+if bot.reboot?
+	sleep 5 #Just need to let the Past instance clear
+	exec "./script/run"
 end

@@ -1,0 +1,10 @@
+commanddefault: deny #The default authorization value for commands can be "allow" or "deny" if set to deny only named users can use commands
+overidepermission:
+  repeat: allow
+identified: false #If set to true RIRCB will check to make sure the user is identified to services
+userinvertlist:
+  reboot:
+    - Arcath
+  kill:
+    - Arcath
+denytochan: true #If set to true  deny messages will be sent to the channle aswell

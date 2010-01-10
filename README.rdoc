@@ -8,4 +8,4 @@ First you need to run the setup rake task:
 
     rake setup
     
-At the moment script/run will only lurk on a channel
+
