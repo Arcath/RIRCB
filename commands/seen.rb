@@ -12,6 +12,7 @@ class Command
 		ds=Datastore.new
 		yaml=ds.load("seen")
 		begin
+			yaml[nick]={}
 			yaml[nick]["action"]=action
 			yaml[nick]["time"]=Time.now
 		rescue NoMethodError

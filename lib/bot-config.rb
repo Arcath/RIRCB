@@ -37,7 +37,7 @@ class Bot
 				end
 			end
 			cmdlist+=")"
-			a=m.scan(/#{@config["command"]}#{cmdlist}(.*)/)
+			a=m.scan(/^#{@config["command"]}#{cmdlist}(.*)/)
 			unless a[0].nil?
 				parse=a[0][1].gsub(/^ /,'')
 				command=a[0][0]
