@@ -1,0 +1,8 @@
+commanddefault: allow #The default authorization value for commands can be "allow" or "deny" if set to deny only named users can use commands
+overidepermission:
+  console: deny #dont remove this.... unless you want it to all go wrong
+identified: false #If set to true RIRCB will check to make sure the user is identified to services
+userinvertlist:
+  console:
+    - YourNick
+denytochan: true #If set to true  deny messages will be sent to the channel aswell

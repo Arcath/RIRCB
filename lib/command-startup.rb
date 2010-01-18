@@ -2,7 +2,8 @@ class Command
 	def initialize(irc,bot)
 		@irc=irc
 		@bot=bot
-		@commands=["reboot","kill","reload"]
+		@db=DB.new(self)
+		@commands=["reboot","kill","reload","help"]
 		Dir["commands/*.rb"].each do |f|
 			require f
 			s=f.scan(/commands\/(.*?)\.rb/).join
@@ -12,6 +13,20 @@ class Command
 	end
 	def commands
 		@commands
+	end
+	def help(msg,chan)
+		s=@bot.nick + " runs RIRCB and has the following commands"
+		@irc.privmsg(s,chan)
+		s=""
+		@commands.each do |cmd|
+			s+=cmd + ","
+		end
+		s=s.gsub(/,$/,'')
+		@irc.privmsg(s,chan)
+		
+	end
+	def addcommand(c)
+		#@commands.push(c)
 	end
 	def reboot(msg,chan)
 		@bot.reboot=true

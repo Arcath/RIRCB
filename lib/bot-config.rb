@@ -51,7 +51,7 @@ class Bot
 					end
 				end
 			end
-			@commands.updateseen(nick,chan,"privmsg")
+			@commands.updateseen(nick.downcase,chan,"privmsg")
 		end
 	end
 	def reboot=(val)
@@ -78,5 +78,8 @@ class Bot
 		@commands=Command.new(@irc,self)
 		puts "Loaded:"
 		puts @commands.commands
+	end
+	def nick
+		@config["nick"]
 	end
 end

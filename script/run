@@ -1,10 +1,11 @@
 #!/usr/bin/env ruby
 #Load Library
-require 'lib/bot-config'
-require 'lib/irc-connect'
-require 'lib/string-methods'
-require 'lib/command-startup.rb'
-require 'lib/datastore.rb'
+require 'lib/bot-config'		#Bot Settings
+require 'lib/irc-connect'		#IRC Socket
+require 'lib/string-methods'		#String Methods "string".privmsg? etc...
+require 'lib/command-startup.rb'	#Command Loader
+require 'lib/datastore.rb'		#Datastore Manager
+require 'lib/database.rb'		#Database
 
 
 #Display a start message
@@ -12,12 +13,14 @@ puts "**********************************************************"
 puts "Starting RIRCB"
 puts "**********************************************************"
 
+#A brief pause
 sleep 1
 
 #Load Config
 puts "Loading Config"
 bot=Bot.new(IRC.new)
 
+#A brief pause
 sleep 1
 
 #The All important loop
@@ -25,6 +28,7 @@ puts "**********************************************************"
 puts "Starting the Main process loop"
 puts "**********************************************************"
 
+#A brief pause
 sleep 1
 
 while (bot.reboot? != true && bot.kill? != true)

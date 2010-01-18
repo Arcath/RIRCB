@@ -2,10 +2,11 @@ class Command
 	def seen(msg,chan)
 		ds=Datastore.new
 		yaml=ds.load("seen")
-		if yaml[msg]
-			@irc.privmsg("#{msg} last #{yaml[msg]["action"]} at #{yaml[msg]["time"]}")
+		hash=yaml[msg.downcase]
+		if hash then
+			@irc.privmsg("#{msg} last #{hash["action"]} at #{hash["time"]}",chan)
 		else
-			@irc.privmsg("#{msg} has never posted on this channel",chan) 
+			@irc.privmsg("\"#{msg}\" has never posted on this channel",chan) 
 		end	
 	end
 	def updateseen(nick,chan,action)

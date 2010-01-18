@@ -4,8 +4,18 @@ RIRCB is an IRC Bot written in Ruby (Im very good at names)
 
 = Usage
 
-First you need to run the setup rake task:
+Before you can use the bot you need to cd to its directory and run:
 
     rake setup
     
+This asks you for all the information needed to create bot.yml
 
+The next step is to create config/authentication.yml, to do this copy one of the files from the config/examples folder and rename it to authentication.yml. Id reccomend that you use denyall as its allot more secure.
+
+The options in the authentication file:
+
+    - commanddefault - This is the default status for all commands "allow" means that anyone can do anything and "deny" means no one can do anything
+    - overidepermission - This is an array where you set the "allow"/"deny" value for each command, this overides the default
+    - identified - This takes a true/false value, if set to true RIRCB will check to make sure that the user is identified before allowing the user overides to take effect, if that overide returns "allow"
+    - userinvertlist - This is an array that has an array for every command. You store the names of everyone you want to have the permission inverted, e.g. if its denyed but the user is in the list ther permission becomes allow.
+    - denytochan - Will send a message to the channel informing the user that they cant use that command, if set to true
