@@ -20,10 +20,6 @@ The options in the authentication file:
     - userinvertlist - This is an array that has an array for every command. You store the names of everyone you want to have the permission inverted, e.g. if its denyed but the user is in the list ther permission becomes allow.
     - denytochan - Will send a message to the channel informing the user that they cant use that command, if set to true
 
-= Usage
-  
-Once all the setup has been completed simply start the bot  by running "script/run"
+= More
 
-After a couple of seconds the bot should join your channel.
-
-You can then use any commands (for a list use help)
+There is allot more to RIRCB, to find out how to customize thurther and add commands and events go to http://www.arcath.net/pages/3
