@@ -40,6 +40,8 @@ task :setup do |t|
 	yaml["channel"]=chan
 	puts "Command Chracter:"
 	yaml["command"]=STDIN.gets.chomp
+	puts "How long should pass between running timed events?"
+	yaml["timer"]=STDIN.gets.chomp
 	puts "**********************************************************"
 	puts "Dumping to YAML"
 	puts "**********************************************************"

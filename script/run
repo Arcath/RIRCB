@@ -4,6 +4,7 @@ require 'lib/bot-config'		#Bot Settings
 require 'lib/irc-connect'		#IRC Socket
 require 'lib/string-methods'		#String Methods "string".privmsg? etc...
 require 'lib/command-startup.rb'	#Command Loader
+require 'lib/ontimer.rb'		#On-Timer Events
 require 'lib/datastore.rb'		#Datastore Manager
 require 'lib/database.rb'		#Database
 
@@ -31,8 +32,15 @@ puts "**********************************************************"
 #A brief pause
 sleep 1
 
+timer=0
 while (bot.reboot? != true && bot.kill? != true)
 	bot.run
+	if timer >= bot.timerlength
+		timer=0
+		bot.ontimer
+	else
+		timer+=10
+	end
 end
 
 bot.disconnect

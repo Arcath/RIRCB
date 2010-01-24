@@ -3,14 +3,14 @@ class DB
 		puts "**********************************************************"
 		puts "Starting Database Connection"
 		puts "**********************************************************"
-		commands.addcommand("add")
-		commands.addcommand("remove")
-		commands.addcommand("about")
+		#commands.addcommand("add")
+		#commands.addcommand("remove")
+		#commands.addcommand("about")
 	end
 end
 class Command
 	def add(msg,chan)
-	
+		
 	end
 	def remove(msg,chan)
 	

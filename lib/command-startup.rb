@@ -3,7 +3,7 @@ class Command
 		@irc=irc
 		@bot=bot
 		@db=DB.new(self)
-		@commands=["reboot","kill","reload","help"]
+		@commands=["reboot","kill","reload","help","add","about","remove"]
 		Dir["commands/*.rb"].each do |f|
 			require f
 			s=f.scan(/commands\/(.*?)\.rb/).join
@@ -24,9 +24,6 @@ class Command
 		s=s.gsub(/,$/,'')
 		@irc.privmsg(s,chan)
 		
-	end
-	def addcommand(c)
-		#@commands.push(c)
 	end
 	def reboot(msg,chan)
 		@bot.reboot=true

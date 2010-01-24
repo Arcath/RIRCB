@@ -1,5 +1,6 @@
 class Bot
 	require 'yaml'
+	require 'timeout'
 	def initialize(irc)
 		@irc=irc
 		@config=YAML::load_file("config/bot.yml")
@@ -16,42 +17,55 @@ class Bot
 		@commands=Command.new(@irc,self)
 		puts "Loaded:"
 		puts @commands.commands
+		puts "**********************************************************"
+		puts "Loading On-Ping Events"
+		puts "**********************************************************"
+		puts "Loading Events"
+		@ontimer=Ontimer.new(@irc,self)
+		puts "Loaded:"
+		puts @ontimer.events
 	end
 	def run
-		msg=@irc.receive
-		if msg.ping?
-			server=msg.scan(/^PING :(.*)/).join
-			@irc.send("PONG #{server}")
-		elsif msg.privmsg?
-			nick=msg.split(/\!/)[0].sub(/^\:/,'')
-			chan=msg.scan(/.* PRIVMSG (.*?) \:.*/).join
-			m=msg.scan(/.* PRIVMSG #{chan} \:(.*)/).join.sub("\r\n",'')
-			if chan == @config["nick"]
-				chan=msg.scan(/^\:(.*)!.*@.*/).join
-			end
-			cmdlist="("
-			@commands.commands.each do |cmd|
-				cmdlist+=cmd
-				if cmd != @commands.commands[@commands.commands.count-1] then
-					cmdlist+="|"
-				end
-			end
-			cmdlist+=")"
-			a=m.scan(/^#{@config["command"]}#{cmdlist}(.*)/)
-			unless a[0].nil?
-				parse=a[0][1].gsub(/^ /,'')
-				command=a[0][0]
-				puts "Running #{command} with #{parse}"
-				if @commands.canuse(command,nick)
-					eval "@commands.#{command}(\"#{parse}\",\"#{chan}\")"
-				else
-					puts "#{nick} is not allowed to run #{command}"
-					if @commands.denytochan
-						@irc.privmsg("Im sorry #{nick}, i cant allow you to do that",chan)
+		begin
+			Timeout::timeout(10) {
+				msg=@irc.receive
+				if msg.ping?
+					server=msg.scan(/^PING :(.*)/).join
+					@irc.send("PONG #{server}")
+				elsif msg.privmsg?
+					nick=msg.split(/\!/)[0].sub(/^\:/,'')
+					chan=msg.scan(/.* PRIVMSG (.*?) \:.*/).join
+					m=msg.scan(/.* PRIVMSG #{chan} \:(.*)/).join.sub("\r\n",'')
+					if chan == @config["nick"]
+						chan=msg.scan(/^\:(.*)!.*@.*/).join
 					end
+					cmdlist="("
+					@commands.commands.each do |cmd|
+						cmdlist+=cmd
+						if cmd != @commands.commands[@commands.commands.count-1] then
+							cmdlist+="|"
+						end
+					end
+					cmdlist+=")"
+					a=m.scan(/^#{@config["command"]}#{cmdlist}(.*)/)
+					unless a[0].nil?
+						parse=a[0][1].gsub(/^ /,'')
+						command=a[0][0]
+						puts "Running #{command} with #{parse}"
+						if @commands.canuse(command,nick)
+							eval "@commands.#{command}(\"#{parse}\",\"#{chan}\")"
+						else
+							puts "#{nick} is not allowed to run #{command}"
+							if @commands.denytochan
+								@irc.privmsg("Im sorry #{nick}, i cant allow you to do that",chan)
+							end
+						end
+					end
+					@commands.updateseen(nick.downcase,chan,"privmsg")
 				end
-			end
-			@commands.updateseen(nick.downcase,chan,"privmsg")
+			}
+		rescue Timeout::Error
+			puts "No Messages"
 		end
 	end
 	def reboot=(val)
@@ -81,5 +95,11 @@ class Bot
 	end
 	def nick
 		@config["nick"]
+	end
+	def ontimer
+		@ontimer.run
+	end
+	def timerlength
+		@config["timer"]
 	end
 end
