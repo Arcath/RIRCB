@@ -34,12 +34,13 @@ sleep 1
 
 timer=0
 while (bot.reboot? != true && bot.kill? != true)
+	start=Time.now
 	bot.run
 	if timer >= bot.timerlength
 		timer=0
 		bot.ontimer
 	else
-		timer+=10
+		timer+=(Time.now-start).to_i
 	end
 end
 
