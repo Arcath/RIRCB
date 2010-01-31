@@ -5,6 +5,7 @@ require 'lib/irc-connect'		#IRC Socket
 require 'lib/string-methods'		#String Methods "string".privmsg? etc...
 require 'lib/command-startup.rb'	#Command Loader
 require 'lib/ontimer.rb'		#On-Timer Events
+require 'lib/onevent.rb'		#On-Event Events
 require 'lib/datastore.rb'		#Datastore Manager
 require 'lib/database.rb'		#Database
 

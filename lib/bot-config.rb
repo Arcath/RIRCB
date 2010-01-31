@@ -18,12 +18,19 @@ class Bot
 		puts "Loaded:"
 		puts @commands.commands
 		puts "**********************************************************"
-		puts "Loading On-Ping Events"
+		puts "Loading On-Timer Events"
 		puts "**********************************************************"
 		puts "Loading Events"
 		@ontimer=Ontimer.new(@irc,self)
 		puts "Loaded:"
 		puts @ontimer.events
+		puts "**********************************************************"
+		puts "Loading On-Event Events"
+		puts "**********************************************************"
+		puts "Loading Events"
+		@onevent=Onevent.new(@irc,self)
+		puts "Loaded:"
+		puts @onevent.events
 	end
 	def run
 		begin

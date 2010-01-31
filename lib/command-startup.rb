@@ -44,7 +44,7 @@ class Command
 				end
 			else
 				#Needs inverting to true?
-				if @auth["userinvertlist"][command].include? user then
+				if @auth["userinvertlist"][command].include? user and @irc.indentified? user then
 					return true
 				else
 					return false

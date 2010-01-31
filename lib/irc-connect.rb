@@ -44,4 +44,26 @@ class IRC
 	def disconnect
 		@con.close
 	end
+	def indentified?(nick)
+		self.send("WHOIS #{nick}")
+		whois=self.receive
+		out=false
+		begin
+			Timeout::timeout(1) {
+				while whois =~ /3[0-9][0-9] #{@nick}/ do
+					begin
+							out = (whois =~ /330/).integer? unless out
+					rescue
+				
+					end
+					puts "Still running the ident"
+					whois=self.receive unless out
+					whois="" if out
+				end
+			}
+		rescue Timeout::Error
+			out=false
+		end
+		return out
+	end
 end
