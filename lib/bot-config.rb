@@ -69,6 +69,16 @@ class Bot
 						end
 					end
 					@commands.updateseen(nick.downcase,chan,"privmsg")
+				elsif msg.join?
+					nick=msg.scan(/^\:(.*)!.*\@.*JOIN\ :\#.*/).join
+					chan=msg.scan(/^\:.*!.*\@.*JOIN\ :\#(.*)/).join
+					chan="##{chan}"
+					@onevent.joins(nick,chan) unless nick == @config["nick"]
+				elsif msg.part?
+					nick=msg.scan(/^\:(.*)!.*\@.*PART\ :\#.*/).join
+					chan=msg.scan(/^\:.*!.*\@.*PART\ :\#(.*)/).join
+					chan="##{chan}"
+					@onevent.joins(nick,chan) unless nick == @config["nick"]
 				end
 			}
 		rescue Timeout::Error
