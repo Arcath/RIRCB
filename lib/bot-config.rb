@@ -78,7 +78,17 @@ class Bot
 					nick=msg.scan(/^\:(.*)!.*\@.*PART\ :\#.*/).join
 					chan=msg.scan(/^\:.*!.*\@.*PART\ :\#(.*)/).join
 					chan="##{chan}"
-					@onevent.joins(nick,chan) unless nick == @config["nick"]
+					@onevent.parts(nick,chan) unless nick == @config["nick"]
+				elsif msg.op?
+					nick=msg.scan(/^\:.*!.* MODE \#.* \+o (.*)/)
+					chan=msg.scan(/^\:.*!.* MODE \#(.*) \+o .*/)
+					chan="##{chan}"
+					@onevent.ops(nick,chan) unless nick == @config["nick"]
+				elsif msg.deop?
+					nick=msg.scan(/^\:.*!.* MODE \#.* \-o (.*)/)
+					chan=msg.scan(/^\:.*!.* MODE \#(.*) \-o .*/)
+					chan="##{chan}"
+					@onevent.deops(nick,chan) unless nick == @config["nick"]
 				end
 			}
 		rescue Timeout::Error
