@@ -3,14 +3,19 @@ class Bot
 	require 'timeout'
 	def initialize(irc)
 		@irc=irc
+		@chanmans=[]
 		@config=YAML::load_file("config/bot.yml")
 		puts "Starting #{@config["nick"]} on #{@config["server"]}"
 		puts "**********************************************************"
 		puts "Connecting to IRC Server"
-		@irc.connect(@config["server"], @config["nick"], @config["host"], @config["name"], @config["port"])
+		@irc.connect(@config["server"], @config["nick"], @config["host"], @config["name"], @config["port"], @config['pass'])
 		puts "Joining Channel"
 		@config["channel"].each do |chan|
 			@irc.join(chan)
+			puts @config["chanman"]
+			if @config["chanman"] == "yes" then
+				@chanmans.push(ChanMan.new(chan,@irc,self))
+			end
 		end
 		puts "**********************************************************"
 		puts "Loading Commands"
@@ -31,6 +36,10 @@ class Bot
 		@onevent=Onevent.new(@irc,self)
 		puts "Loaded:"
 		puts @onevent.events
+		puts "**********************************************************"
+		puts "Loading Responders"
+		puts "**********************************************************"
+		@responder=Responder.new(@irc,self)
 	end
 	def run
 		begin
@@ -56,17 +65,19 @@ class Bot
 					cmdlist+=")"
 					a=m.scan(/^#{@config["command"]}#{cmdlist}(.*)/)
 					unless a[0].nil?
-						parse=a[0][1].gsub(/^ /,'')
+						parse=a[0][1].gsub(/^ /,'').gsub("\r","").gsub("\n","")
 						command=a[0][0]
 						puts "Running #{command} with #{parse}"
 						if @commands.canuse(command,nick)
-							eval "@commands.#{command}(\"#{parse}\",\"#{chan}\")"
+							eval "@commands.#{command}(\"#{parse}\",\"#{chan}\",\"#{nick}\")"
 						else
 							puts "#{nick} is not allowed to run #{command}"
 							if @commands.denytochan
 								@irc.privmsg("Im sorry #{nick}, i cant allow you to do that",chan)
 							end
 						end
+					else
+						@responder.respond(msg.scan(/.* PRIVMSG #{chan} \:(.*)/).join.sub("\r\n",''),msg.split(/\!/)[0].sub(/^\:/,''),chan)
 					end
 					@commands.updateseen(nick.downcase,chan,"privmsg")
 				elsif msg.join?
@@ -128,5 +139,8 @@ class Bot
 	end
 	def timerlength
 		@config["timer"]
+	end
+	def responder
+		@responder
 	end
 end

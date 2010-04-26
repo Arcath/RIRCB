@@ -8,6 +8,9 @@ require 'lib/ontimer.rb'		#On-Timer Events
 require 'lib/onevent.rb'		#On-Event Events
 require 'lib/datastore.rb'		#Datastore Manager
 require 'lib/database.rb'		#Database
+require 'lib/channelmanager.rb'		#Channel Manager
+require 'lib/responders.rb'		#Message responders
+#require 'lib/webinterface.rb'		#Web Interface
 
 
 #Display a start message
@@ -24,6 +27,18 @@ bot=Bot.new(IRC.new)
 
 #A brief pause
 sleep 1
+
+#Web Interface
+#puts "**********************************************************"
+#puts "Starting the Web Interface"
+#puts "**********************************************************"
+
+#http=HTTPAdmin.new(85)
+
+#Start the HTTP Thread
+#Thread.new do
+#	http.run
+#end
 
 #The All important loop
 puts "**********************************************************"

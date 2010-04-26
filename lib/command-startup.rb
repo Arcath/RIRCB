@@ -3,7 +3,7 @@ class Command
 		@irc=irc
 		@bot=bot
 		@db=DB.new(self)
-		@commands=["reboot","kill","reload","help","add","about","remove"]
+		@commands=["reboot","kill","reload","help","add","about","remove","respond","responses_for"]
 		Dir["commands/*.rb"].each do |f|
 			require f
 			s=f.scan(/commands\/(.*?)\.rb/).join
@@ -14,7 +14,7 @@ class Command
 	def commands
 		@commands
 	end
-	def help(msg,chan)
+	def help(msg,chan,nick)
 		s=@bot.nick + " runs RIRCB and has the following commands"
 		@irc.privmsg(s,chan)
 		s=""
@@ -25,11 +25,11 @@ class Command
 		@irc.privmsg(s,chan)
 		
 	end
-	def reboot(msg,chan)
+	def reboot(msg,chan,nick)
 		@bot.reboot=true
 		@irc.part("Leaving, back soon",chan)
 	end
-	def kill(msg,chan)
+	def kill(msg,chan,nick)
 		@bot.kill=true
 		@irc.part("Leaving",chan)
 	end
@@ -62,7 +62,7 @@ class Command
 			return cmdper(command)
 		end
 	end
-	def reload(msg,chan)
+	def reload(msg,chan,nick)
 		@irc.notice("Reloading Commands",chan)
 		@bot.reloadcommands
 	end

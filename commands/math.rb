@@ -1,9 +1,8 @@
 class Command
 	include Math
 	require 'timeout'
-	def math(math,chan)
-		#Come constants
-#		i = Math.sqrt(-1)
+	def math(math,chan,nick)
+		#Some constants
 		everything = 42
 		leet = 1337
 		#Perform the Math

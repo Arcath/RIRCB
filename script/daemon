@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+#Funtions
+
+def running?
+
+end
+
+#"Program"
+puts "Starting RIRCB Daemon style"
+puts "I Hope you screened this"
+sleep 2
+
+

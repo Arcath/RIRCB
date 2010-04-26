@@ -9,12 +9,16 @@ task :setup do |t|
 	system("chmod +x script/run")
 	system("mkdir -p datastore/")
 	system("chmod 777 datastore")
+	system("mkdir -p config/chanman/")
+	system("chmod 777 config/chanman/")
 	puts "**********************************************************"
 	puts "Config"
 	puts "**********************************************************"
 	yaml={}
 	puts "Nickname:"
 	yaml["nick"]=STDIN.gets.chomp
+	puts "Registration Password required if you have registered the bots nickname Reccomended if you intend to use channel manager:"
+	yaml["pass"]=STDIN.gets.chomp
 	puts "Real Name: (appears when being WHOISed)"
 	yaml["name"]=STDIN.gets.chomp
 	puts "Hostname: (can be anything host like)"
@@ -42,6 +46,8 @@ task :setup do |t|
 	yaml["command"]=STDIN.gets.chomp
 	puts "How long should pass between running timed events?"
 	yaml["timer"]=STDIN.gets.chomp
+	puts "Should I Manage your channel (enable chanman) (yes/no)"
+	yaml["chanman"]=STDIN.gets.chomp
 	puts "**********************************************************"
 	puts "Dumping to YAML"
 	puts "**********************************************************"

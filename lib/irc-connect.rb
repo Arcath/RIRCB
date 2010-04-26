@@ -1,6 +1,6 @@
 class IRC
 	require 'socket'
-	def connect(server, nick, host, name, port)
+	def connect(server, nick, host, name, port, pass)
 		puts "Connecting to #{server} on port #{port}"
 		@con=TCPSocket.new(server,port)
 		send("USER " + nick + " " + host + " bla :" + name)
@@ -16,6 +16,12 @@ class IRC
 		end
 		puts "Connected as #{nick}"
 		@nick=nick
+		if pass then
+			puts "Identifiying to Services"
+			send("PRIVMSG NickServ :IDENTIFY #{pass}")
+			msg=self.receive
+			puts "Identified as #{nick}"
+		end
 	end
 	def receive
 		r=@con.recv(512)
