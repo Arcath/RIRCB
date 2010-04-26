@@ -48,6 +48,8 @@ task :setup do |t|
 	yaml["timer"]=STDIN.gets.chomp
 	puts "Should I Manage your channel (enable chanman) (yes/no)"
 	yaml["chanman"]=STDIN.gets.chomp
+	puts "Should I Respond to tiggers with pre written responses (that you configure in channel) (yes/no)"
+	yaml["responder"]=STDIN.gets.chomp
 	puts "**********************************************************"
 	puts "Dumping to YAML"
 	puts "**********************************************************"

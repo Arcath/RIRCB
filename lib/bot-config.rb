@@ -77,7 +77,7 @@ class Bot
 							end
 						end
 					else
-						@responder.respond(msg.scan(/.* PRIVMSG #{chan} \:(.*)/).join.sub("\r\n",''),msg.split(/\!/)[0].sub(/^\:/,''),chan)
+						@responder.respond(msg.scan(/.* PRIVMSG #{chan} \:(.*)/).join.sub("\r\n",''),msg.split(/\!/)[0].sub(/^\:/,''),chan) if @config['responder'] == "yes"
 					end
 					@commands.updateseen(nick.downcase,chan,"privmsg")
 				elsif msg.join?
