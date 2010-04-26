@@ -3,7 +3,7 @@ class Command
 		@irc=irc
 		@bot=bot
 		@db=DB.new(self)
-		@commands=["reboot","kill","reload","help","add","about","remove","respond","responses_for"]
+		@commands=["reboot","kill","reload","help","add","about","remove","responds_to?","respond","responses_for"]
 		Dir["commands/*.rb"].each do |f|
 			require f
 			s=f.scan(/commands\/(.*?)\.rb/).join

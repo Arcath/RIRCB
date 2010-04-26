@@ -28,13 +28,24 @@ class Responder
 		list+=")"
 		scanned=msg.gsub(/^#{@bot.nick}. /,"").downcase.scan(/^#{list}/)
 		if !(scanned[0].nil?) && rand(2) == 1
-			with=@responses[scanned[0][0]][rand(@responses[scanned[0][0]].count)].gsub("#nick",nick).gsub("#chan",chan)
-			@irc.privmsg(with,chan)
+			if @responses[scanned[0][0]].is_a? Array
+				with=@responses[scanned[0][0]][rand(@responses[scanned[0][0]].count)].gsub("#nick",nick).gsub("#chan",chan)
+				@irc.privmsg(with,chan)
+			elsif @responses[scanned[0][0]].is_a? String
+				with=@responses[@responses[scanned[0][0]]][rand(@responses[@responses[scanned[0][0]]].count)].gsub("#nick",nick).gsub("#chan",chan)
+				@irc.privmsg(with,chan)			
+			end
 		end
 	end
 	
 	def responses
 		@responses
+	end
+	
+	def alias_response(to,with)
+		@responses[to]=with
+		save
+		true
 	end
 	
 	private
@@ -53,6 +64,11 @@ class Command
 			with=msg.split(", ")[1]
 			@bot.responder.add(to,with)
 			@irc.privmsg("Added!",chan)
+		elsif msg.split(":").count == 2
+			to=msg.split(":")[0].downcase
+			with=msg.split(":")[1].downcase
+			@bot.responder.alias_response(to,with)
+			@irc.privmsg("Added Alias!",chan)
 		else
 			@irc.privmsg("#{nick}: Malformed Syntax",chan)
 		end
@@ -62,6 +78,7 @@ class Command
 		@irc.privmsg("Responses for #{msg}",chan)
 		msg=msg.gsub("\r","").gsub("\n","")
 		if @bot.responder.responses[msg]
+			msg = @bot.responder.responses[msg] if @bot.responder.responses[msg].is_a? String
 			string=""
 			@bot.responder.responses[msg].each do |response|
 				string+=response
@@ -70,6 +87,15 @@ class Command
 			@irc.privmsg(string,chan)
 		else
 			@irc.privmsg("none",chan)
+		end
+	end
+	
+	def responds_to?(msg,chan,nick)
+		@irc.privmsg("I respond to:",chan)
+		string=""
+		@bot.responder.responses.keys.each do |to|
+			string+=to
+			string+=", " unless to == @bot.responder.responses.keys.last
 		end
 	end	
 end

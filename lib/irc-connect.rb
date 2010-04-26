@@ -72,4 +72,7 @@ class IRC
 		end
 		return out
 	end
+	def names(chan)
+		send("NAMES #{chan}")
+	end
 end
