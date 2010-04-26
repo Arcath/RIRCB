@@ -90,7 +90,7 @@ class Command
 		end
 	end
 	
-	def responds_to?(msg,chan,nick)
+	def responds_to(msg,chan,nick)
 		@irc.privmsg("I respond to:",chan)
 		string=""
 		@bot.responder.responses.keys.each do |to|
