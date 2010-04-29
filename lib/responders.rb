@@ -97,5 +97,6 @@ class Command
 			string+=to
 			string+=", " unless to == @bot.responder.responses.keys.last
 		end
+		@irc.privmsg(string,chan)
 	end	
 end

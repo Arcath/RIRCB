@@ -40,6 +40,7 @@ class Bot
 		puts "Loading Responders"
 		puts "**********************************************************"
 		@responder=Responder.new(@irc,self)
+		@dead=[1,2,3,4,5,6,7,8,9,10]
 	end
 	def run
 		begin
@@ -77,9 +78,9 @@ class Bot
 							end
 						end
 					else
-						@responder.respond(msg.scan(/.* PRIVMSG #{chan} \:(.*)/).join.sub("\r\n",''),msg.split(/\!/)[0].sub(/^\:/,''),chan) if @config['responder'] == "yes"
+						@responder.respond(msg.scan(/.* PRIVMSG #{chan} \:(.*)/).join.sub("\r\n",''),msg.split(/\!/)[0].sub(/^\:/,''),chan) if @config['responder']
 					end
-					@commands.updateseen(nick.downcase,chan,"privmsg")
+					@commands.updateseen(nick.downcase,chan,"said something")
 				elsif msg.join?
 					nick=msg.scan(/^\:(.*)!.*\@.*JOIN\ :\#.*/).join
 					chan=msg.scan(/^\:.*!.*\@.*JOIN\ :\#(.*)/).join
@@ -100,6 +101,8 @@ class Bot
 					chan=msg.scan(/^\:.*!.* MODE \#(.*) \-o .*/)
 					chan="##{chan}"
 					@onevent.deops(nick,chan) unless nick == @config["nick"]
+				else
+					dead? msg
 				end
 			}
 		rescue Timeout::Error
@@ -142,5 +145,15 @@ class Bot
 	end
 	def responder
 		@responder
+	end
+	def dead?(msg)
+		@dead.slice!(0)
+		@dead.push(msg)
+		i=1
+		die=true
+		1.upto(9) do
+			die = false unless @dead[i] == @dead[i-1]
+		end
+		self.reboot=true if die
 	end
 end

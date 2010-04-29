@@ -6,7 +6,7 @@ class Command
 			nick=msg.downcase
 			hash=yaml[chan][nick]
 			if hash then
-				@irc.privmsg("#{msg} last #{hash["action"]}'ed #{hash["time"]}",chan)
+				@irc.privmsg("#{msg} last #{hash["action"]} #{hash["time"]}",chan)
 			else
 				@irc.privmsg("\"#{msg}\" has never posted on this channel",chan) 
 			end

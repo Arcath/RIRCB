@@ -74,5 +74,16 @@ class IRC
 	end
 	def names(chan)
 		send("NAMES #{chan}")
+		names=[]
+		recv=self.receive
+		while !(recv =~ /366 #{@nick} #{chan}/) do
+			list=recv.gsub(/.*#{chan} :#{@nick} /,"")
+			listarray=list.split(" ")
+			listarray.each do |entry|
+				names.push(entry)
+			end
+			recv=self.receive
+		end
+		names
 	end
 end
