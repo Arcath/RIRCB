@@ -1,7 +1,8 @@
 class Responder
-	def initialize(irc,bot)
+	def initialize(irc,bot,i18n)
 		@irc=irc
 		@bot=bot
+		@i18n=i18n
 		begin
 			@responses=YAML::load_file("config/responses.yml")
 		rescue
@@ -63,19 +64,19 @@ class Command
 			to=msg.split(", ")[0].downcase
 			with=msg.split(", ")[1]
 			@bot.responder.add(to,with)
-			@irc.privmsg("Added!",chan)
+			@irc.privmsg(@i18n.phrase("responders","added"),chan)
 		elsif msg.split(":").count == 2
 			to=msg.split(":")[0].downcase
 			with=msg.split(":")[1].downcase
 			@bot.responder.alias_response(to,with)
-			@irc.privmsg("Added Alias!",chan)
+			@irc.privmsg(@i18n.phrase("responders","addedalias"),chan)
 		else
-			@irc.privmsg("#{nick}: Malformed Syntax",chan)
+			@irc.privmsg(@i18n.phrase("responders","malformed",[nick]),chan)
 		end
 	end
 	
 	def responses_for(msg,chan,nick)
-		@irc.privmsg("Responses for #{msg}",chan)
+		@irc.privmsg(@i18n.phrase("responders","responsesfor",[msg]),chan)
 		msg=msg.gsub("\r","").gsub("\n","")
 		if @bot.responder.responses[msg]
 			msg = @bot.responder.responses[msg] if @bot.responder.responses[msg].is_a? String
@@ -86,12 +87,12 @@ class Command
 			end
 			@irc.privmsg(string,chan)
 		else
-			@irc.privmsg("none",chan)
+			@irc.privmsg(@i18n.phrase("common","none"),chan)
 		end
 	end
 	
 	def responds_to(msg,chan,nick)
-		@irc.privmsg("I respond to:",chan)
+		@irc.privmsg(@i18n.phrase("responders","respondto"),chan)
 		string=""
 		@bot.responder.responses.keys.each do |to|
 			string+=to

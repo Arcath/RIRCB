@@ -44,6 +44,8 @@ task :setup do |t|
 	yaml["channel"]=chan
 	puts "Command Chracter:"
 	yaml["command"]=STDIN.gets.chomp
+	puts "What language do you want to use (en=english):"
+	yaml["lang"]=STDIN.gets.chomp
 	puts "How long should pass between running timed events?"
 	yaml["timer"]=STDIN.gets.chomp
 	puts "Should I Manage your channel (enable chanman) (yes/no)"

@@ -1,5 +1,5 @@
 class Ontimer
 	def consoleput(chan)
-		puts "Running Events for #{chan}"
+		puts @i18n.fortimer("consoleput","running",[chan])
 	end
 end

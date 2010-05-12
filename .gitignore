@@ -4,3 +4,4 @@ config/authentication.yml
 config/responses.yml
 datastore/*
 commands/identified.rb
+running.tmp

@@ -1,7 +1,8 @@
 class Onevent
-	def initialize(irc,bot)
+	def initialize(irc,bot,i18n)
 		@bot=bot
 		@irc=irc
+		@i18n=i18n
 		@events=[]
 		Dir["onevent/*.rb"].each do |f|
 			require f

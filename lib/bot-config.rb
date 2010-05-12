@@ -5,11 +5,13 @@ class Bot
 		@irc=irc
 		@chanmans=[]
 		@config=YAML::load_file("config/bot.yml")
-		puts "Starting #{@config["nick"]} on #{@config["server"]}"
+		@i18n=I18n.new(@config['lang'])
+		@irc.i18n(@i18n)
+		puts @i18n.phrase("system","start",[@config["nick"],@config["server"]])
 		puts "**********************************************************"
-		puts "Connecting to IRC Server"
+		puts @i18n.phrase("system","conto")
 		@irc.connect(@config["server"], @config["nick"], @config["host"], @config["name"], @config["port"], @config['pass'])
-		puts "Joining Channel"
+		puts @i18n.phrase("system","jchan")
 		@config["channel"].each do |chan|
 			@irc.join(chan)
 			puts @config["chanman"]
@@ -18,28 +20,28 @@ class Bot
 			end
 		end
 		puts "**********************************************************"
-		puts "Loading Commands"
-		@commands=Command.new(@irc,self)
-		puts "Loaded:"
+		puts @i18n.phrase("system","lcom")
+		@commands=Command.new(@irc,self,@i18n)
+		puts @i18n.phrase("common","loaded") + ":"
 		puts @commands.commands
 		puts "**********************************************************"
-		puts "Loading On-Timer Events"
+		puts @i18n.phrase("system","lontimer")
 		puts "**********************************************************"
-		puts "Loading Events"
-		@ontimer=Ontimer.new(@irc,self)
-		puts "Loaded:"
+		puts @i18n.phrase("system","levents")
+		@ontimer=Ontimer.new(@irc,self,@i18n)
+		puts @i18n.phrase("common","loaded") + ":"
 		puts @ontimer.events
 		puts "**********************************************************"
-		puts "Loading On-Event Events"
+		puts @i18n.phrase("system","lonevent")
 		puts "**********************************************************"
-		puts "Loading Events"
-		@onevent=Onevent.new(@irc,self)
-		puts "Loaded:"
+		puts @i18n.phrase("system","levents")
+		@onevent=Onevent.new(@irc,self,@i18n)
+		puts @i18n.phrase("common","loaded") + ":"
 		puts @onevent.events
 		puts "**********************************************************"
-		puts "Loading Responders"
+		puts @i18n.phrase("system","lresponders")
 		puts "**********************************************************"
-		@responder=Responder.new(@irc,self)
+		@responder=Responder.new(@irc,self,@i18n)
 		@dead=[1,2,3,4,5,6,7,8,9,10]
 	end
 	def run
@@ -68,13 +70,13 @@ class Bot
 					unless a[0].nil?
 						parse=a[0][1].gsub(/^ /,'').gsub("\r","").gsub("\n","")
 						command=a[0][0]
-						puts "Running #{command} with #{parse}"
+						puts @i18n.phrase("command","running",[command,parse])
 						if @commands.canuse(command,nick)
 							eval "@commands.#{command}(\"#{parse}\",\"#{chan}\",\"#{nick}\")"
 						else
-							puts "#{nick} is not allowed to run #{command}"
+							puts @i18n.phrase("command","outdeny",[nick,command])
 							if @commands.denytochan
-								@irc.privmsg("Im sorry #{nick}, i cant allow you to do that",chan)
+								@irc.privmsg(@i18n.phrase("command","deny",[nick]),chan)
 							end
 						end
 					else
@@ -106,7 +108,7 @@ class Bot
 				end
 			}
 		rescue Timeout::Error
-			puts "No Messages"
+			puts @i18n.phrase("system","nomsg")
 		end
 	end
 	def reboot=(val)
@@ -129,9 +131,9 @@ class Bot
 	end
 	def reloadcommands
 		puts "**********************************************************"
-		puts "Re-Loading Commands"
-		@commands=Command.new(@irc,self)
-		puts "Loaded:"
+		puts @i18n.phrase("system","reloadcmd")
+		@commands=Command.new(@irc,self,@i18n)
+		puts @i18n.phrase("common","loaded") + ":"
 		puts @commands.commands
 	end
 	def nick

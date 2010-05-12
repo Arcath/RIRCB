@@ -1,0 +1,8 @@
+mustc: "$1: You must enter a X,Y Co-ordinate"
+mustc3: "$1: You must enter a X,Y Co-ordinate less than or equal to 3"
+mustc1: "$1: You must enter a X,Y Co-ordinate greater than or equal to 1"
+notturn: "Its not your turn!"
+alreadytaken: "That space has already been taken"
+newgame: "Starting a New Game of tic tac toe"
+won: "$1 has won!"
+lost: "You all loose"

@@ -1,0 +1,6 @@
+invalid: "Invalid Command"
+syntax: "Syntax Error"
+insecure: "Insecure Operation"
+div0: "Division By 0"
+timeout: "Timeout"
+error: "Error $1"

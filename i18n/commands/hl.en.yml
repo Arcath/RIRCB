@@ -1,0 +1,6 @@
+higher: "Higher than $1"
+lower: "Lower than $1"
+win: "$1 wins with $2"
+start: "Game of Higher/Lower with $1"
+mustbe10: "Number must be higher than 10"
+below: "The highest number allowed is 9,999,999"

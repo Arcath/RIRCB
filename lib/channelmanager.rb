@@ -2,7 +2,7 @@ class ChanMan
 	def initialize(chan,irc,bot)
 		@irc=irc
 		@bot=bot
-		puts "Becoming God on #{chan}"
+		puts @i18n.phrase("system","bechanman",[chan])
 		begin
 			@config=YAML::load_file("config/chanman/#{chan}.yml")	
 		rescue

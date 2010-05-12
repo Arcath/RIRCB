@@ -1,13 +1,31 @@
 #!/usr/bin/env ruby
+
 #Funtions
+def run?
+	lines=%x[tail -n 3 running.tmp]
+	if lines =~ /^Sent: PART .*? :Leaving\nLEFT .*?\n/ then
+		out=false
+	else
+		out=true
+	end
+	out
+end
 
 def running?
+	if %x[]
+end
 
+def startrircb
+	%x[script/run > running.tmp &].scan(/[1] (.*?)\n/).join
 end
 
 #"Program"
 puts "Starting RIRCB Daemon style"
-puts "I Hope you screened this"
+puts "I hope you screened this"
 sleep 2
 
+while run? do
+	@pid = startrircb unless running?(@pid)
+	puts @pid
+end
 

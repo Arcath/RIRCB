@@ -1,6 +1,7 @@
 class Ontimer
-	def initialize(irc,bot)
+	def initialize(irc,bot,i18n)
 		@irc=irc
+		@i18n=i18n
 		@bot=bot
 		@events=[]
 		Dir["ontimer/*.rb"].each do |f|

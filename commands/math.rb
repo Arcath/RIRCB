@@ -8,7 +8,7 @@ class Command
 		#Perform the Math
 		begin
 			if math =~ /sleep/ or math =~ /eval/ or math =~ /Thread/ or math =~ /Timeout/ or math =~ /@/
-				out = "Invalid Command"
+				out = @i18n.forcmd("math","invalid")
 			else
 				Timeout::timeout(1) {
 					out = Thread.new { $SAFE=4; eval math.gsub("^","**") }.value.inspect
@@ -22,15 +22,15 @@ class Command
 				end
 			end
 		rescue SyntaxError
-			out = "Syntax Error"
+			out = @i18n.forcmd("math","syntax")
 		rescue SecurityError
-			out = "Insecure Operation"
+			out = @i18n.forcmd("math","insecure")
 		rescue ZeroDivisionError
-			out = "Division By 0"
+			out = @i18n.forcmd("math","div0")
 		rescue Timeout::Error
-			out = "Timeout"
+			out = @i18n.forcmd("math","timeout")
 		rescue => error
-			out = "Error #{error}"
+			out = @i18n.forcmd("math","error",[error])
 		end
 		@irc.privmsg("> #{out}",chan)
 	end

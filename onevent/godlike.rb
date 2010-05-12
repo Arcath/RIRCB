@@ -1,6 +1,6 @@
 class Onevent
 	def godlike(s,chan)
-		@irc.privmsg("#{s} is Godlike!",chan)
+		@irc.privmsg(@i18n.forevent("godlike","godlike",[s]),chan)
 	end
 	def godlike_respond_to?
 		return ["op"]

@@ -5,17 +5,17 @@ class Command
 			x=input.split(",")[0].to_i-1
 			y=input.split(",")[1].to_i-1
 			if !(x && y) then
-				@irc.privmsg("#{nick}: You must enter a X,Y Co-ordinate",chan)
+				@irc.privmsg(@i18n.forcmd("tictactoe","mustc",[nick]),chan)
 			elsif x >=4 || y >=4 then
-				@irc.privmsg("#{nick}: You must enter a X,Y Co-ordinate less than or equal to 3",chan)
+				@irc.privmsg(@i18n.forcmd("tictactoe","mustc3",[nick]),chan)
 			elsif x <=0 || y <=0 then
-				@irc.privmsg("#{nick}: You must enter a X,Y Co-ordinate greater than or equal to 1",chan)
+				@irc.privmsg(@i18n.forcmd("tictactoe","mustc1",[nick]),chan)
 			else
 				if nick != @turn && @turn != nil then
-					@irc.privmsg("Its not your turn!",chan)
+					@irc.privmsg(@i18n.forcmd("tictactoe","notturn"),chan)
 				else
 					if @game[x][y] != " " then
-						@irc.privmsg("That space has already been taken",chan)
+						@irc.privmsg(@i18n.forcmd("tictactoe","alreadytaken"),chan)
 					else
 						@game[x][y]=@next
 						if @next == "X" then
@@ -43,7 +43,7 @@ class Command
 			@p1=nick
 			@p2=nil
 			@turn=@p1
-			@irc.privmsg("Starting a New Game of tic tac toe",chan)
+			@irc.privmsg(@i18n.forcmd("tictactoe","newgame"),chan)
 			tictactoe_grid(chan)
 		end
 	end
@@ -90,12 +90,12 @@ class Command
 			@won=true if col.includes? true
 		end
 		if @won == true
-			@irc.privmsg("#{nick} has won!",chan)
+			@irc.privmsg(@i18n.forcmd("tictactoe","won",[nick]),chan)
 			@game=nil
 			@p2=nil
 			@turn=nil
 		elsif takenspaces == 9
-			@irc.privmsg("You all loose",chan)
+			@irc.privmsg(@i18n.forcmd("tictactoe","lost"),chan)
 		end
 	end
 end

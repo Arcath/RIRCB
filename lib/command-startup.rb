@@ -1,5 +1,6 @@
 class Command
-	def initialize(irc,bot)
+	def initialize(irc,bot,i18n)
+		@i18n=i18n
 		@irc=irc
 		@bot=bot
 		@db=DB.new(self)
@@ -15,7 +16,7 @@ class Command
 		@commands
 	end
 	def help(msg,chan,nick)
-		s=@bot.nick + " runs RIRCB and has the following commands"
+		s=@i18n.phrase("system","helpmsg",[@bot.nick])
 		@irc.privmsg(s,chan)
 		s=""
 		@commands.each do |cmd|
@@ -27,11 +28,11 @@ class Command
 	end
 	def reboot(msg,chan,nick)
 		@bot.reboot=true
-		@irc.part("Leaving, back soon",chan)
+		@irc.part(@i18n.phrase("system","reboot"),chan)
 	end
 	def kill(msg,chan,nick)
 		@bot.kill=true
-		@irc.part("Leaving",chan)
+		@irc.part(@i18n.phrase("system","kill"),chan)
 	end
 	def canuse(command,user)
 		begin
@@ -63,7 +64,7 @@ class Command
 		end
 	end
 	def reload(msg,chan,nick)
-		@irc.notice("Reloading Commands",chan)
+		@irc.notice(@i18n.phrase("system","reload"),chan)
 		@bot.reloadcommands
 	end
 	def denytochan

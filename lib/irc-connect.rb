@@ -1,7 +1,7 @@
 class IRC
 	require 'socket'
 	def connect(server, nick, host, name, port, pass)
-		puts "Connecting to #{server} on port #{port}"
+		puts @i18n.phrase("irc","connecting",[server,port])
 		@con=TCPSocket.new(server,port)
 		send("USER " + nick + " " + host + " bla :" + name)
 		send("NICK " + nick)
@@ -14,28 +14,28 @@ class IRC
 			end
 			msg=@con.recv(512)
 		end
-		puts "Connected as #{nick}"
+		puts @i18n.phrase("irc","connected",[nick])
 		@nick=nick
 		if pass then
-			puts "Identifiying to Services"
+			puts @i18n.phrase("irc","identifying")
 			send("PRIVMSG NickServ :IDENTIFY #{pass}")
 			msg=self.receive
-			puts "Identified as #{nick}"
+			puts @i18n.phrase("irc","identified",[nick])
 		end
 	end
 	def receive
 		r=@con.recv(512)
-		puts "Received: #{r}" unless r =~ /372 #{@nick}/
+		puts @i18n.phrase("irc","received",[r]) unless r =~ /372 #{@nick}/
 		r
 	end
 	def send(s)
 		s=s.gsub(/\n/,'').gsub(/\r/,'')
 		@con.send(s +"\n", 0)
-		puts "Sent: #{s}"
+		puts @i18n.phrase("irc","sent",[s])
 	end
 	def join(chan)
 		self.send("JOIN #{chan}")
-		puts "Joined #{chan}"
+		puts @i18n.phrase("irc","joined",[chan])
 	end
 	def privmsg(s,chan)
 		self.send("PRIVMSG #{chan} :#{s}")
@@ -45,7 +45,7 @@ class IRC
 	end
 	def part(s,chan)
 		self.send("PART #{chan} :#{s}")
-		puts "LEFT #{chan}"
+		puts @i18n.phrase("irc","left",[chan])
 	end
 	def disconnect
 		@con.close
@@ -62,7 +62,6 @@ class IRC
 					rescue
 				
 					end
-					puts "Still running the ident"
 					whois=self.receive unless out
 					whois="" if out
 				end
@@ -85,5 +84,8 @@ class IRC
 			recv=self.receive
 		end
 		names
+	end
+	def i18n(i18n)
+		@i18n=i18n
 	end
 end

@@ -10,6 +10,7 @@ require 'lib/datastore.rb'		#Datastore Manager
 require 'lib/database.rb'		#Database
 require 'lib/channelmanager.rb'		#Channel Manager
 require 'lib/responders.rb'		#Message responders
+require 'lib/i18n.rb'			#i18n Support
 #require 'lib/webinterface.rb'		#Web Interface
 
 
@@ -22,7 +23,6 @@ puts "**********************************************************"
 sleep 1
 
 #Load Config
-puts "Loading Config"
 bot=Bot.new(IRC.new)
 
 #A brief pause
