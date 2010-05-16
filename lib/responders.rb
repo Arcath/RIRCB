@@ -28,7 +28,8 @@ class Responder
 		end
 		list+=")"
 		scanned=msg.gsub(/^#{@bot.nick}. /,"").downcase.scan(/^#{list}/)
-		if !(scanned[0].nil?) && rand(2) == 1
+		#if !(scanned[0].nil?) && rand(2) == 1
+		if !(scanned[0].nil?)
 			if @responses[scanned[0][0]].is_a? Array
 				with=@responses[scanned[0][0]][rand(@responses[scanned[0][0]].count)].gsub("#nick",nick).gsub("#chan",chan)
 				@irc.privmsg(with,chan)

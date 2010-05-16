@@ -72,7 +72,11 @@ class Bot
 						command=a[0][0]
 						puts @i18n.phrase("command","running",[command,parse])
 						if @commands.canuse(command,nick)
-							eval "@commands.#{command}(\"#{parse}\",\"#{chan}\",\"#{nick}\")"
+							begin
+								eval "@commands.#{command}(\"#{parse}\",\"#{chan}\",\"#{nick}\")"
+							rescue SyntaxError
+								@irc.privmsg(@i18n.phrase("command","syntaxerror"),chan)
+							end
 						else
 							puts @i18n.phrase("command","outdeny",[nick,command])
 							if @commands.denytochan
@@ -80,7 +84,7 @@ class Bot
 							end
 						end
 					else
-						@responder.respond(msg.scan(/.* PRIVMSG #{chan} \:(.*)/).join.sub("\r\n",''),msg.split(/\!/)[0].sub(/^\:/,''),chan) if @config['responder']
+						@responder.respond(msg.scan(/.* PRIVMSG #{chan} \:(.*)/).join.gsub("\r","").gsub("\n",""),msg.split(/\!/)[0].sub(/^\:/,''),chan) if @config['responder']
 					end
 					@commands.updateseen(nick.downcase,chan,"said something")
 				elsif msg.join?

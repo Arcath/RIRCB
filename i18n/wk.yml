@@ -10,10 +10,10 @@ system:
   lresponders: "Loading Responders"
   nomsg: "No Messages"
   reloadcmd: "Re-Loading Commands"
-  bechanman: "Becoming God on $1"
-  helpmsg: "$1 runs RIRCB and has the following commands"
-  reboot: "Leaving, back soon"
-  kill: "Leaving"
+  bechanman: "Karrrr gah uh $1"
+  helpmsg: "$1 raaaaa RIRCB nuh fa Wyeeeee"
+  reboot: "Wyash, rens arrr"
+  kill: "Wyash"
   reload: "Reloading Commands"
 common:
   loaded: "Loaded"
@@ -23,8 +23,7 @@ common:
 command:
   running: "Running $1 with $2"
   outdeny: "$1 is not allowed to run $2"
-  deny: "Im sorry $1, i cant allow you to do that"
-  syntaxerror: "That input caused an error"
+  deny: "WARGHHHHHHHHHHH $1"
 irc:
   connecting: "Connecting to $1 on port $2"
   connected: "Connected as $1"

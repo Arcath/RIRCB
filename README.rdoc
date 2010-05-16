@@ -19,6 +19,12 @@ The options in the authentication file:
     - identified - This takes a true/false value, if set to true RIRCB will check to make sure that the user is identified before allowing the user overides to take effect, if that overide returns "allow"
     - userinvertlist - This is an array that has an array for every command. You store the names of everyone you want to have the permission inverted, e.g. if its denyed but the user is in the list ther permission becomes allow.
     - denytochan - Will send a message to the channel informing the user that they cant use that command, if set to true
+    
+= i18n
+
+RIRCB is multi lingual, although the only languages avliable at the moment are English and Wookie (for my testing).
+
+To add another language, for example french add "fr.yml" to the i18n folder and copy the contents of en.yml. Then you need to replace the strings with thier french translations.
 
 = More
 
