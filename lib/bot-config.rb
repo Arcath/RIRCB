@@ -162,19 +162,12 @@ class Bot
 	end
 	
 	def cmdlist
-		@cmdlist || generate_cmd_list
+		@cmdlist || generate_cmd_list && @cmdlist
 	end
 	
 	private
 	
 	def generate_cmd_list
-		gcmdlist="("
-		@commands.commands.each do |cmd|
-			gcmdlist+=cmd
-			gcmdlist+="|" if cmd != @commands.commands[@commands.commands.count-1]
-		end
-		gcmdlist+=")"
-		@cmdlist = gcmdlist
-		gcmdlist
+		@cmdlist = "(" + @commands.commands.join("|") + ")"
 	end
 end

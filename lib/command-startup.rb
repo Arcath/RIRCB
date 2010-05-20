@@ -19,10 +19,8 @@ class Command
 		s=@i18n.phrase("system","helpmsg",[@bot.nick])
 		@irc.privmsg(s,chan)
 		s=""
-		@commands.each do |cmd|
-			s+=cmd + "," if canuse(cmd,nick)
-		end
-		s=s.gsub(/,$/,'')
+		@commands.map { |cmd| s+=cmd + ", " if canuse(cmd,nick) }
+		s=s.gsub(/, $/,'')
 		@irc.privmsg(s,chan)
 		
 	end
