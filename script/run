@@ -11,6 +11,7 @@ require 'lib/database.rb'		#Database
 require 'lib/channelmanager.rb'		#Channel Manager
 require 'lib/responders.rb'		#Message responders
 require 'lib/i18n.rb'			#i18n Support
+require 'lib/http-title.rb'		#HTTP Title
 #require 'lib/webinterface.rb'		#Web Interface
 
 

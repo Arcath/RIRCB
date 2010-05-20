@@ -20,7 +20,7 @@ class Command
 		@irc.privmsg(s,chan)
 		s=""
 		@commands.each do |cmd|
-			s+=cmd + ","
+			s+=cmd + "," if canuse(cmd,nick)
 		end
 		s=s.gsub(/,$/,'')
 		@irc.privmsg(s,chan)

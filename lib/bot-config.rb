@@ -7,6 +7,7 @@ class Bot
 		@config=YAML::load_file("config/bot.yml")
 		@i18n=I18n.new(@config['lang'])
 		@irc.i18n(@i18n)
+		@http=HTTPTitle.new(self,@irc,@i18n)
 		puts @i18n.phrase("system","start",[@config["nick"],@config["server"]])
 		puts "**********************************************************"
 		puts @i18n.phrase("system","conto")
@@ -58,14 +59,6 @@ class Bot
 					if chan == @config["nick"]
 						chan=msg.scan(/^\:(.*)!.*@.*/).join
 					end
-					cmdlist="("
-					@commands.commands.each do |cmd|
-						cmdlist+=cmd
-						if cmd != @commands.commands[@commands.commands.count-1] then
-							cmdlist+="|"
-						end
-					end
-					cmdlist+=")"
 					a=m.scan(/^#{@config["command"]}#{cmdlist}(.*)/)
 					unless a[0].nil?
 						parse=a[0][1].gsub(/^ /,'').gsub("\r","").gsub("\n","")
@@ -84,7 +77,11 @@ class Bot
 							end
 						end
 					else
-						@responder.respond(msg.scan(/.* PRIVMSG #{chan} \:(.*)/).join.gsub("\r","").gsub("\n",""),msg.split(/\!/)[0].sub(/^\:/,''),chan) if @config['responder']
+						if m =~ /http:\/\/.*? / then
+							@http.parse(m.scan(/(http:\/\/.*?) /).join,chan)
+						else
+							@responder.respond(msg.scan(/.* PRIVMSG #{chan} \:(.*)/).join.gsub("\r","").gsub("\n",""),msg.split(/\!/)[0].sub(/^\:/,''),chan) if @config['responder']
+						end
 					end
 					@commands.updateseen(nick.downcase,chan,"said something")
 				elsif msg.join?
@@ -137,6 +134,7 @@ class Bot
 		puts "**********************************************************"
 		puts @i18n.phrase("system","reloadcmd")
 		@commands=Command.new(@irc,self,@i18n)
+		@cmdlist=nil
 		puts @i18n.phrase("common","loaded") + ":"
 		puts @commands.commands
 	end
@@ -161,5 +159,22 @@ class Bot
 			die = false unless @dead[i] == @dead[i-1]
 		end
 		self.reboot=true if die
+	end
+	
+	def cmdlist
+		@cmdlist || generate_cmd_list
+	end
+	
+	private
+	
+	def generate_cmd_list
+		gcmdlist="("
+		@commands.commands.each do |cmd|
+			gcmdlist+=cmd
+			gcmdlist+="|" if cmd != @commands.commands[@commands.commands.count-1]
+		end
+		gcmdlist+=")"
+		@cmdlist = gcmdlist
+		gcmdlist
 	end
 end

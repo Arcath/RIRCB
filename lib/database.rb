@@ -9,13 +9,13 @@ class DB
 	end
 end
 class Command
-	def add(msg,chan)
+	def add(msg,chan,nick)
 		
 	end
-	def remove(msg,chan)
+	def remove(msg,chan,nick)
 	
 	end
-	def about(msg,chan)
+	def about(msg,chan,nick)
 	
 	end
 end
